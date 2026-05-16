@@ -1,0 +1,28 @@
+{
+  "name": "hourly-pl3-dashboard",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vue.volar",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install",
+  "postStartCommand": "echo 'Setting up cron for write-sheets...' && (crontab -l 2>/dev/null || true; echo '0 * * * * cd /workspaces/pl3 && node scripts/write-sheets.cjs >> logs/sheets.log 2>&1') | crontab - && echo 'Cron setup complete: write-sheets every hour at :00'",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/pl3,type=bind",
+  "workspaceFolder": "/workspaces/pl3",
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite Dev Server",
+      "onForward": "notify"
+    }
+  },
+  "forwardPorts": [5173],
+  "remoteUser": "node"
+}
